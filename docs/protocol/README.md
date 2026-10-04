@@ -1,9 +1,10 @@
 # Protocol notes
 
-Status: nothing is decoded yet. This file separates what has been verified from what is
-only reported or suspected.
+Status: nothing is decoded by us yet. This file separates what we have verified from what
+prior art reports and what is only suspected. The full prior-art survey, with sources, is
+in [../research/prior-art.md](../research/prior-art.md).
 
-## Verified
+## Verified by us
 
 From Windows device metadata on one DX5 II, 2026-10-04. Nothing was sent to the device.
 
@@ -14,16 +15,40 @@ From Windows device metadata on one DX5 II, 2026-10-04. Nothing was sent to the 
     usage `0x0000`;
   - a HID consumer-control interface at interface 3 (usage page `0x000C`, usage `0x0001`).
 
-## Reported by third parties (not yet verified by us)
+By calculation, 2026-10-04:
 
-- The control protocol runs over HID on interface 2, with 16-byte reports and no report
-  IDs. Source: gjcourt's protocol notes,
-  https://github.com/gjcourt/lab/blob/main/01-audio-midi/_reference/topping-dx5ii-hid-protocol.md
-- Those notes say parts of them were taken from the code of Topping's own web app
-  (web v1.10.0). That matters for how cherrytop may use them; see the license decision.
+- The frame checksum is CRC-16/MODBUS over bytes 2–10, stored high byte first. Recomputed
+  for four frames published by two independent sources; all four matched.
+
+## Reported by prior art (not yet verified on our unit)
+
+- The control protocol runs over HID interface 2 with 16-byte input and output reports and
+  no report IDs. Two independent sources print the same report descriptor.
+- Frame layout: `22 33`, type, count, index, 16-bit command, signed big-endian 32-bit
+  value, CRC, `66 77`, `00`.
+- bcdDevice tracks the firmware version (`0x0239` on firmware 2.39).
+- The most complete public spec was corrected against the code of Topping's own web app
+  (web v1.10.0) and is no longer clean-room. That matters for how cherrytop may use it;
+  see the license decision.
 
 ## Hypotheses (unproven)
 
-- The device revision `0x0253` is the firmware version. Supporting evidence: Topping's
-  latest DX5 II firmware is V2.53 (released 2026/9/17), which matches `0x0253` read as
-  binary-coded decimal. It has not been confirmed by reading the version from the device.
+- Our unit runs firmware 2.53. Supporting evidence: bcdDevice `0x0253`, the reported
+  bcdDevice-to-firmware mapping, and Topping's latest DX5 II firmware being V2.53
+  (released 2026/9/17). Not yet confirmed by reading the version from the device.
+- The device broadcasts a frame on every state change. The two main sources disagree.
+
+## Safety notes for whoever implements this
+
+These come from the hazards documented in the prior-art survey.
+
+- Identify a device by its USB product string as well as its IDs. The product ID is shared
+  by models whose command numbers mean different things.
+- Never send a read for a command that is not on the verified list for that exact model.
+  On at least one sibling model an unlisted read acts as a write.
+- Resolve the volume unit (0.5 dB or 1 dB per raw step) from fresh device state before
+  every absolute volume write. A stale assumption can land louder than requested.
+- Factory reset, firmware update and scene save are ordinary command numbers. The encoder
+  must not be able to produce them.
+- A write that returns no error has not necessarily taken effect. Check the echo, and read
+  back where the protocol allows it.

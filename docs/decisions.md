@@ -44,6 +44,10 @@ The gates may be stretched a little if a clearly better result needs it.
 ### Q7. Device scope
 **Decided:** v1 supports the DX5 II only; other devices follow. Capabilities are data; no
 plugin interface until a second real device exists (ADR 0004).
+**Under review:** ADR 0004 says other models are shown but stay read-only. Evidence found
+after this answer shows that even a read can change settings on a sibling model. A
+proposed amendment (no protocol traffic at all to a model without a verified definition)
+is recorded in ADR 0004 and put to the maintainer as Q16(d).
 
 ### Q8. Write-safety contract
 **Decided:** Accepted as proposed (ADR 0002), including: guards may block a script until
