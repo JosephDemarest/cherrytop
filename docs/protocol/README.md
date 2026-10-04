@@ -19,6 +19,11 @@ By calculation, 2026-10-04:
 
 - The frame checksum is CRC-16/MODBUS over bytes 2–10, stored high byte first. Recomputed
   for four frames published by two independent sources; all four matched.
+- Preamp is reported as linear gain in 25-bit fixed point, `round(10^(dB/20) * 2^25)`.
+  The published value for −6.0 dB (`0x01009B9D`) matches that formula. The vendor's own
+  value for −3.0 dB (`0x016A77C4`) does not: the formula gives `0x016A77DF` in double
+  precision and `0x016A77DE` in single precision. The vendor's exact arithmetic is
+  unknown; captures at several preamp values will show it.
 
 ## Reported by prior art (not yet verified on our unit)
 

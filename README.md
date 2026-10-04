@@ -1,15 +1,19 @@
 # cherrytop
 
-Fast, native desktop control for Topping DACs: volume, PEQ and device settings over
-USB HID. No account, no web app.
+Fast, open control for Topping DACs: volume, PEQ and device settings over USB HID, from a
+command line and a native desktop app. No account, no server, works offline.
 
-**Status:** just started. Nothing works yet.
+**Status:** design stage. Nothing works yet.
 
 ## Plan
 
 - **Protocol:** an open, documented implementation of the USB HID control protocol,
   starting with the Topping DX5 II.
-- **App:** a fast, polished desktop app for Windows, Linux and macOS.
+- **CLI:** `cherryctl`, a single small executable for scripting and automation.
+- **App:** a fast, polished desktop app for Windows and Linux, with experimental macOS
+  builds.
+
+The design decisions so far are in [docs/decisions.md](docs/decisions.md).
 
 ## Not affiliated
 
