@@ -13,7 +13,8 @@ command line and a native desktop app. No account, no server, works offline.
 - **App:** a fast, polished desktop app for Windows and Linux, with experimental macOS
   builds.
 
-The design decisions so far are in [docs/decisions.md](docs/decisions.md).
+The design decisions are in [docs/decisions.md](docs/decisions.md) and the phased
+implementation plan is in [docs/plan.md](docs/plan.md).
 
 ## Not affiliated
 

@@ -11,6 +11,9 @@ How each answer was reached:
 - **Self-grill (Q26–Q125):** asked and answered by the interviewer, on the maintainer's
   instruction.
 
+The maintainer reviewed the full list on 2026-10-04 and accepted it, including the items
+tagged [yours]. The implementation plan built from it is in [plan.md](plan.md).
+
 Tags:
 
 - **[check]** rests on a fact that still has to be confirmed on hardware or in docs.
